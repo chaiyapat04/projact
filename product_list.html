@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #d6cdcd; font-family: 'Prompt', sans-serif; padding-bottom: 70px; margin: 0; }
+        
+        /* Header */
+        .header { display: flex; align-items: center; padding: 20px; gap: 15px; }
+        .menu-icon { font-size: 24px; color: #333; cursor: pointer; }
+        .search-bar { flex-grow: 1; background: white; border-radius: 30px; padding: 8px 15px; display: flex; align-items: center; }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 16px; margin-left: 10px; color: #555; }
+
+        .title { text-align: center; color: #004d40; font-size: 20px; font-weight: 500; margin-bottom: 20px; }
+
+        /* Grid สินค้า (ปรับปรุงใหม่ให้เหมือนหน้าอื่น) */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
+        
+        .card { 
+            background: white; 
+            border: 1px solid #333; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            border-radius: 10px; /* เพิ่มความมน */
+        }
+        
+        .card img { 
+            width: 100%; 
+            height: 120px; 
+            object-fit: contain; 
+            margin-bottom: 10px; 
+        }
+
+        /* ส่วนแสดงราคาและชื่อ */
+        .info { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 12px; 
+            font-weight: 600; 
+            width: 100%;
+        }
+        .price { color: red; }
+
+        /* เมนูล่าง */
+        .navbar { position: fixed; bottom: 0; width: 100%; height: 60px; background: #d6cdcd; border-top: 2px solid #555; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { font-size: 24px; color: #000; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <i class="fa-solid fa-bars menu-icon" onclick="window.location.href='builder.html'"></i>
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="สินค้าที่ต้องการ" id="searchInput">
+        </div>
+    </div>
+
+    <div class="title">สินค้าคอมเซ็ต</div>
+
+    <div class="grid">
+        <div class="card">
+            <img src="c:\Users\fone\Downloads\com.png">
+            <div class="info">
+                <span>Set Beginner</span>
+                <span class="price">12,900-</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="c:\Users\fone\Downloads\com.png">
+            <div class="info">
+                <span>Set Gaming</span>
+                <span class="price">25,500-</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="c:\Users\fone\Downloads\com.png">
+            <div class="info">
+                <span>Set Streamer</span>
+                <span class="price">45,900-</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="c:\Users\fone\Downloads\com.png">
+            <div class="info">
+                <span>Set Pro Work</span>
+                <span class="price">89,000-</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar">
+        <div class="nav-item" onclick="window.location.href='product_list.html'">
+            <i class="fa-solid fa-house"></i>
+        </div>
+        
+        <div class="nav-item" onclick="window.location.href='cart.html'">
+            <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        
+        <div class="nav-item" onclick="window.location.href='login.html'">
+            <i class="fa-solid fa-user"></i>
+        </div>
+    </div>
+
+    <script>
+        // 1. ระบบค้นหา (Code เดิมของคุณ)
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const keyword = this.value.toLowerCase();
+                if (keyword.includes('cpu')) window.location.href = 'cpu_result.html';
+                else if (keyword.includes('mainboard')) window.location.href = 'mainboard_result.html';
+                else if (keyword.includes('hdd') || keyword.includes('harddisk')) window.location.href = 'harddisk_result.html';
+                else if (keyword.includes('ssd')) window.location.href = 'ssd_result.html';
+                else if (keyword.includes('m.2') || keyword.includes('nvme')) window.location.href = 'm2_result.html';
+                else if (keyword.includes('psu')) window.location.href = 'psu_result.html';
+                else if (keyword.includes('cooler')) window.location.href = 'cpu_cooler_result.html';
+                else if (keyword.includes('case')) window.location.href = 'case_result.html';
+            }
+        });
+
+        // 2. ระบบกดลงตะกร้า (เพิ่มใหม่)
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                // ดึงข้อมูล
+                const img = this.querySelector('img').src;
+                const name = this.querySelector('.info span:first-child').innerText;
+                const price = this.querySelector('.price').innerText;
+
+                // สร้าง Object สินค้า
+                const product = {
+                    name: name,
+                    price: price,
+                    img: img,
+                    category: 'Computer Set'
+                };
+
+                // บันทึกลง LocalStorage
+                let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+                cart.push(product);
+                localStorage.setItem('myCart', JSON.stringify(cart));
+
+                // แจ้งเตือนและไปหน้าตะกร้า
+                if(confirm('เพิ่ม ' + name + ' ลงตะกร้าแล้ว! ไปดูตะกร้าเลยไหม?')) {
+                    window.location.href = 'cart.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

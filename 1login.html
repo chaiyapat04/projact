@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1Login Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ตั้งค่าพื้นฐาน */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        body {
+            /* สีพื้นหลังโทนเทาอมน้ำตาล */
+            background-color: #d6cdcd; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* กล่องจำลองหน้าจอมือถือ */
+        .mobile-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px; 
+            text-align: center;
+            position: relative;
+        }
+
+        /* สไตล์ช่องกรอกข้อมูล */
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 45px; /* เว้นที่ซ้ายขวา */
+            border-radius: 30px; /* ขอบมน */
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: white;
+            color: #333;
+        }
+
+        /* ไอคอนในช่อง Input (เหลือแค่ด้านซ้าย) */
+        .input-icon-left {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #000;
+        }
+
+        /* Checkbox จำรหัสผ่าน */
+        .remember-me {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 25px;
+            padding-left: 5px;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* ปุ่มกด Login หลัก */
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(90deg, #6bd5d6 0%, #6bd5d6 100%); 
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        /* ปุ่ม Social Media */
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            border-radius: 30px;
+            border: none;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .btn-social i {
+            position: absolute;
+            left: 30px; 
+            font-size: 20px;
+        }
+
+        .btn-fb {
+            background-color: #1877f2; 
+        }
+
+        .btn-google {
+            background-color: #6faedd; 
+        }
+
+        /* ลิงก์ด้านล่าง */
+        .footer-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .footer-text a {
+            color: #000;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        
+        .forgot-pass {
+            display: block;
+            margin-top: 30px;
+            color: #000;
+            text-decoration: underline;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <div class="logo-area">
+            <div class="logo-placeholder">
+                <img src=" c:\Users\fone\Downloads\it com.png" style="width: 300px; height: auto;">
+            </div>
+        </div>
+
+        <form>
+            <div class="input-group">
+                <i class="fa-solid fa-at input-icon-left"></i>
+                <input type="text" placeholder="ยูสเซอร์">
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-lock input-icon-left"></i>
+                <input type="password" placeholder="รหัสผ่าน">
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="remember">
+                <label for="remember">จำรหัสผ่าน</label>
+            </div>
+
+            <button type="button" class="btn-login">เข้าสู่ระบบ</button>
+        </form>
+
+        <div class="divider">หรือเข้าสู่ระบบอื่นๆ</div>
+
+        <button class="btn-social btn-fb">
+            <i class="fa-brands fa-facebook"></i>
+            เข้าสู่ระบบ facebook
+        </button>
+
+        <button class="btn-social btn-google">
+            <i class="fa-brands fa-google"></i>
+            เข้าสู่ระบบ google
+        </button>
+
+        <div class="footer-text">
+            ไม่ใช่สมาชิก <a href="2register.html">สมัครสมาชิก</a>
+
+<script>
+        // หาฟังก์ชันนี้ด้านล่างสุด
+function setActive(element) {
+    // ... (โค้ดเดิม) ...
+
+    const iconClass = element.querySelector('i').className;
+    if(iconClass.includes('fa-house')) {
+        console.log('Go to Home');
+    } else if(iconClass.includes('fa-cart-shopping')) {
+        console.log('Go to Cart');
+    } else if(iconClass.includes('fa-user')) {
+        // 🔴 แก้ตรงนี้: สั่งให้ไปหน้า login.html
+        window.location.href = 'login.html'; 
+    }
+}
+    </script>
+</body>
+</html>

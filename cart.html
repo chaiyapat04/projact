@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart & Budget</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { background-color: #d6cdcd; font-family: 'Prompt', sans-serif; padding-bottom: 180px; margin: 0; }
+
+        /* Header */
+        .header { background: white; padding: 20px; text-align: center; font-size: 20px; font-weight: 600; color: #004d40; position: relative; }
+        .back-btn { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #333; }
+
+        /* โซนตั้งงบประมาณ (เพิ่มใหม่) */
+        .budget-section {
+            background: #004d40;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .budget-input {
+            width: 80%;
+            padding: 10px;
+            border-radius: 30px;
+            border: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+            outline: none;
+        }
+
+        /* รายการสินค้า */
+        .cart-container { padding: 0 20px; }
+        .cart-item {
+            background: white; border-radius: 15px; padding: 15px; margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .item-left { display: flex; align-items: center; gap: 15px; }
+        .item-img { width: 60px; height: 60px; object-fit: contain; border: 1px solid #eee; border-radius: 10px; }
+        .item-name { font-weight: 500; font-size: 16px; color: #333; }
+        .item-cat { font-size: 12px; color: #888; }
+        .item-price { color: #009688; font-weight: bold; margin-top: 5px; }
+
+        .btn-delete { color: #ef5350; cursor: pointer; padding: 10px; font-size: 18px; }
+
+        /* ส่วนสรุปยอดเงิน (Fixed ด้านล่าง) */
+        .summary-bar {
+            position: fixed; bottom: 60px; left: 0; width: 100%;
+            background: white; padding: 20px;
+            border-top-left-radius: 20px; border-top-right-radius: 20px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            z-index: 90;
+        }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: #666; }
+        
+        /* สไตล์งบคงเหลือ */
+        .remaining-row { 
+            display: flex; justify-content: space-between; 
+            margin-top: 10px; padding-top: 10px; 
+            border-top: 1px dashed #ddd; 
+            font-size: 18px; font-weight: bold; 
+        }
+        .text-green { color: #2e7d32; } /* เงินเหลือ */
+        .text-red { color: #c62828; }   /* เงินติดลบ */
+
+        .btn-checkout {
+            width: 100%; padding: 12px; margin-top: 15px;
+            background: linear-gradient(90deg, #6bd5d6, #009688);
+            color: white; border: none; border-radius: 30px;
+            font-size: 18px; font-weight: 600; cursor: pointer;
+        }
+
+        /* เมนูล่าง */
+        .navbar { position: fixed; bottom: 0; width: 100%; height: 60px; background: #d6cdcd; border-top: 2px solid #555; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { font-size: 24px; color: #000; cursor: pointer; }
+        .nav-item.active { color: #009688; }
+
+        .empty-cart { text-align: center; margin-top: 50px; color: #666; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="fa-solid fa-chevron-left back-btn" onclick="window.history.back()"></i>
+        ตรวจสอบงบประมาณ
+    </div>
+
+    <div class="budget-section">
+        <div><i class="fa-solid fa-wallet"></i> ตั้งงบสเปคคอมของคุณ</div>
+        <input type="number" id="userBudget" class="budget-input" placeholder="ใส่เงินที่มี (บาท)" oninput="updateBudget()">
+    </div>
+
+    <div class="cart-container" id="cartList">
+        </div>
+
+    <div class="summary-bar">
+        <div class="summary-row">
+            <span>ราคาสินค้าทั้งหมด</span>
+            <span id="totalPrice">0 บาท</span>
+        </div>
+        
+        <div class="remaining-row">
+            <span>งบคงเหลือ</span>
+            <span id="remainingMoney">0 บาท</span>
+        </div>
+
+        <button class="btn-checkout" onclick="alert('สั่งซื้อเรียบร้อย! ขอบคุณที่ใช้บริการ')">ยืนยันการสั่งซื้อ</button>
+    </div>
+
+    <div class="navbar">
+        <div class="nav-item" onclick="window.location.href='product_list.html'"><i class="fa-solid fa-house"></i></div>
+        <div class="nav-item active" onclick="window.location.href='cart.html'"><i class="fa-solid fa-cart-shopping"></i></div>
+        <div class="nav-item" onclick="window.location.href='login.html'"><i class="fa-solid fa-user"></i></div>
+    </div>
+
+    <script>
+        // โหลดข้อมูลเมื่อเปิดหน้า
+        let currentTotal = 0;
+        
+        // 1. โหลดตะกร้าสินค้า
+        loadCart();
+        
+        // 2. โหลดงบที่เคยตั้งไว้ (ถ้ามี)
+        const savedBudget = localStorage.getItem('myBudget');
+        if(savedBudget) {
+            document.getElementById('userBudget').value = savedBudget;
+            updateBudget(); // คำนวณทันที
+        }
+
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+            const container = document.getElementById('cartList');
+            const totalPriceEl = document.getElementById('totalPrice');
+
+            container.innerHTML = '';
+            currentTotal = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="empty-cart"><i class="fa-solid fa-basket-shopping" style="font-size:50px; margin-bottom:10px;"></i><br>ยังไม่มีสินค้าในตะกร้า</div>';
+            } else {
+                cart.forEach((item, index) => {
+                    let priceNum = Number(String(item.price).replace(/,/g, '').replace('-', ''));
+                    currentTotal += priceNum;
+
+                    const html = `
+                        <div class="cart-item">
+                            <div class="item-left">
+                                <img src="${item.img}" class="item-img" onerror="this.src='https://via.placeholder.com/60'">
+                                <div>
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-price">${priceNum.toLocaleString()}-</div>
+                                </div>
+                            </div>
+                            <div class="btn-delete" onclick="removeItem(${index})">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += html;
+                });
+            }
+
+            totalPriceEl.innerText = currentTotal.toLocaleString() + ' บาท';
+            updateBudget(); // คำนวณงบทุกครั้งที่โหลดตะกร้า
+        }
+
+        // ฟังก์ชันคำนวณงบประมาณ
+        function updateBudget() {
+            const budgetInput = document.getElementById('userBudget').value;
+            const remainingEl = document.getElementById('remainingMoney');
+
+            // บันทึกงบไว้ในเครื่อง
+            localStorage.setItem('myBudget', budgetInput);
+
+            if(budgetInput === '') {
+                remainingEl.innerText = "กรุณาใส่องบ";
+                remainingEl.className = ""; // ไม่ใส่สี
+                return;
+            }
+
+            const budget = Number(budgetInput);
+            const remaining = budget - currentTotal;
+
+            remainingEl.innerText = remaining.toLocaleString() + ' บาท';
+
+            // เปลี่ยนสีตามยอดเงิน
+            if (remaining >= 0) {
+                remainingEl.className = "text-green"; // เงินเหลือ (เขียว)
+            } else {
+                remainingEl.className = "text-red"; // เงินติดลบ (แดง)
+                remainingEl.innerText += " (งบเกิน)";
+            }
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('myCart', JSON.stringify(cart));
+            loadCart();
+        }
+    </script>
+
+</body>
+</html>

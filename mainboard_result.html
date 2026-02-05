@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mainboard Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- สไตล์เหมือนหน้า CPU 100% --- */
+        body { background-color: #d6cdcd; font-family: 'Prompt', sans-serif; padding-bottom: 70px; margin: 0; }
+
+        .header { display: flex; align-items: center; padding: 20px; gap: 15px; }
+        .menu-icon { font-size: 24px; color: #333; cursor: pointer; }
+        .search-bar { flex-grow: 1; background: white; border-radius: 30px; padding: 8px 15px; display: flex; align-items: center; }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 16px; margin-left: 10px; }
+
+        /* ป้าย Tag ชื่อหมวดหมู่ */
+        .tag-container { text-align: center; margin-bottom: 20px; }
+        .tag { background: white; color: #004d40; padding: 5px 40px; border-radius: 20px; font-weight: 600; font-size: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: inline-block; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
+        .card { background: white; border: 1px solid #333; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
+        .card img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 10px; }
+        .info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; }
+        .price { color: red; }
+
+        /* เมนูล่าง */
+        .navbar { position: fixed; bottom: 0; width: 100%; height: 60px; background: #d6cdcd; border-top: 2px solid #555; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { font-size: 24px; color: #000; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="fa-solid fa-chevron-left menu-icon" onclick="window.history.back()"></i>
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" value="mainboard">
+        </div>
+    </div>
+
+    <div class="tag-container"><div class="tag">Mainboard</div></div>
+
+    <div class="grid">
+        
+        <div class="card">
+            <img src="https://m.media-amazon.com/images/I/81I-G4Qd0mL._AC_SL1500_.jpg">
+            <div class="info"><span>Z790 WIFI</span><span class="price">11,500-</span></div>
+        </div>
+
+        <div class="card">
+            <img src="https://m.media-amazon.com/images/I/71X-99a2wZL._AC_SL1500_.jpg">
+            <div class="info"><span>B760M D4</span><span class="price">4,590-</span></div>
+        </div>
+
+        <div class="card">
+            <img src="https://m.media-amazon.com/images/I/81x5rE-d3PL._AC_SL1500_.jpg">
+            <div class="info"><span>X670E Gaming</span><span class="price">14,900-</span></div>
+        </div>
+
+        <div class="card">
+            <img src="https://m.media-amazon.com/images/I/71f-W-A4jKL._AC_SL1500_.jpg">
+            <div class="info"><span>B650M WIFI</span><span class="price">5,990-</span></div>
+        </div>
+
+        <div class="card">
+            <img src="https://m.media-amazon.com/images/I/71e-C4C+s+L._AC_SL1500_.jpg">
+            <div class="info"><span>H610M-K</span><span class="price">2,890-</span></div>
+        </div>
+
+        <div class="card">
+            <img src="https://m.media-amazon.com/images/I/81pM06p1eLL._AC_SL1500_.jpg">
+            <div class="info"><span>Z690 AORUS</span><span class="price">9,900-</span></div>
+        </div>
+
+    </div>
+
+    <div class="navbar">
+        <div class="nav-item" onclick="window.location.href='product_list.html'">
+            <i class="fa-solid fa-house"></i>
+        </div>
+        
+        <div class="nav-item" onclick="window.location.href='cart.html'">
+            <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        
+        <div class="nav-item" onclick="window.location.href='login.html'">
+            <i class="fa-solid fa-user"></i>
+        </div>
+    </div>
+    <script>
+    // --- ส่วนที่ 1: ดึงสินค้าที่เพิ่มจาก Admin มาแสดง ---
+    const grid = document.querySelector('.grid');
+    const storedProducts = JSON.parse(localStorage.getItem('myShopProducts')) || [];
+
+    storedProducts.forEach(product => {
+        // เช็คว่าเป็นหมวด mainboardหรือไม่
+        if (product.category === 'mainboard') { 
+            const newCardHTML = `
+                <div class="card">
+                    <img src="${product.img}" onerror="this.src='https://via.placeholder.com/150'">
+                    <div class="info">
+                        <span>${product.name}</span>
+                        <span class="price">${Number(product.price).toLocaleString()}-</span>
+                    </div>
+                </div>
+            `;
+            // เพิ่มการ์ดใหม่เข้าไปต่อท้าย
+            grid.innerHTML += newCardHTML;
+        }
+    });
+
+    // --- ส่วนที่ 2: ทำให้สินค้าทุกชิ้น (ทั้งเก่าและใหม่) กดลงตะกร้าได้ ---
+    
+    // ต้องค้นหาการ์ดทั้งหมดใหม่อีกรอบ หลังจากที่เพิ่มสินค้าจาก Admin ลงไปแล้ว
+    const allCards = document.querySelectorAll('.card');
+
+    allCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // ดึงข้อมูลสินค้าจากการ์ดนั้นๆ
+            const img = this.querySelector('img').src;
+            const name = this.querySelector('.info span:first-child').innerText;
+            const price = this.querySelector('.price').innerText;
+
+            // สร้าง Object สินค้า
+            const product = {
+                name: name,
+                price: price,
+                img: img,
+                category: 'MAINBOARD' // กำหนดหมวดหมู่เป็น MAINBOARD
+            };
+
+            // บันทึกลงตะกร้า
+            let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+            cart.push(product);
+            localStorage.setItem('myCart', JSON.stringify(cart));
+
+            // ถาม user
+            if(confirm('เพิ่ม ' + name + ' ลงตะกร้าแล้ว! ไปดูตะกร้าเลยไหม?')) {
+                window.location.href = 'cart.html';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

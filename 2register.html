@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2register Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ตั้งค่าพื้นฐาน */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        body {
+            /* สีพื้นหลังโทนเทาอมน้ำตาล */
+            background-color: #d6cdcd; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* กล่องจำลองหน้าจอมือถือ */
+        .mobile-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px; 
+            text-align: center;
+            position: relative;
+        }
+
+        /* หัวข้อหน้าเพจ */
+        .page-title {
+            font-size: 28px;
+            font-weight: 500;
+            color: #000;
+            margin-bottom: 40px; /* เว้นระยะห่างจากด้านบนและช่องกรอก */
+        }
+
+        /* สไตล์ช่องกรอกข้อมูล */
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 45px; /* เว้นที่ซ้ายขวาเผื่อไอคอน */
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: white;
+            color: #333;
+        }
+
+        /* สไตล์พิเศษสำหรับช่องยืนยันรหัสผ่าน (ไม่มีไอคอนและตัวหนังสืออยู่ตรงกลาง) */
+        .input-group input.center-text {
+            text-align: center;
+            padding: 12px 20px; /* ลด padding ด้านข้างเพราะไม่มีไอคอน */
+        }
+
+        /* ไอคอนในช่อง Input */
+        .input-icon-left {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #000;
+        }
+
+        /* Checkbox จำรหัสผ่าน */
+        .remember-me {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 25px;
+            padding-left: 5px;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            border: 1px solid #000;
+        }
+
+        /* ปุ่มสมัครสมาชิก */
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(90deg, #6bd5d6 0%, #6bd5d6 100%); 
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <h1 class="page-title">สมัครสมาชิก</h1>
+
+        <form>
+            <div class="input-group">
+                <i class="fa-solid fa-at input-icon-left"></i>
+                <input type="text" placeholder="ยูสเซอร์">
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-lock input-icon-left"></i>
+                <input type="password" placeholder="รหัสผ่าน">
+            </div>
+
+            <div class="input-group">
+                <input type="password" placeholder="ยืนยันรหัสผ่าน" class="center-text">
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="remember">
+                <label for="remember">จำรหัสผ่าน</label>
+            </div>
+
+            <button type="button" class="btn-register">สมัครสมาชิก</button>
+        </form>
+
+    </div>
+    <script>
+        // 1. จับตัวปุ่มสมัครสมาชิก (class="btn-register")
+        const registerButton = document.querySelector('.btn-register');
+
+        // 2. เมื่อมีการกดปุ่ม (click) ให้ทำงานตามนี้...
+        registerButton.addEventListener('click', function() {
+            
+            // แสดงข้อความแจ้งเตือน
+            alert('สมัครสมาชิกเรียบร้อยแล้ว! กรุณาเข้าสู่ระบบ');
+
+            // สั่งให้ย้ายหน้าไปที่ login.html
+            window.location.href = '1login.html'; 
+            
+        });
+    </script>
+</body>
+</html>
