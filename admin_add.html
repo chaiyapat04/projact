@@ -13,26 +13,26 @@
         h1 { text-align: center; color: #004d40; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
         h3 { color: #333; margin-bottom: 15px; }
 
-        /* โซนฟอร์ม */
         .form-box { background: #f0fdfc; padding: 20px; border-radius: 15px; border: 1px dashed #009688; margin-bottom: 30px; }
         .input-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: 500; color: #555; }
         
-        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; outline: none; box-sizing: border-box; }
-        input:focus, select:focus { border-color: #009688; }
+        input, select, textarea { 
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; 
+            font-size: 16px; outline: none; box-sizing: border-box; font-family: 'Prompt', sans-serif;
+        }
+        input:focus, select:focus, textarea:focus { border-color: #009688; }
+        textarea { resize: vertical; }
 
         .row { display: flex; gap: 15px; }
         .col { flex: 1; }
 
-        /* ปุ่มบันทึก */
         .btn-save { width: 100%; padding: 15px; border: none; border-radius: 30px; background: linear-gradient(90deg, #6bd5d6, #009688); color: white; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
         .btn-save:hover { opacity: 0.9; transform: scale(1.02); }
 
-        /* ตัวอย่างรูป */
         .preview-box { text-align: center; margin-top: 10px; display: none; }
         .preview-box img { width: 120px; height: 120px; object-fit: contain; border: 1px solid #ddd; background: white; padding: 5px; border-radius: 10px; }
 
-        /* ตาราง */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background: #004d40; color: white; padding: 12px; text-align: left; border-radius: 5px 5px 0 0; }
         td { border-bottom: 1px solid #eee; padding: 12px; vertical-align: middle; }
@@ -40,38 +40,46 @@
 
         .product-img-mini { width: 50px; height: 50px; object-fit: contain; border: 1px solid #ddd; border-radius: 5px; background: white; }
         .badge { display: inline-block; padding: 3px 10px; border-radius: 15px; background: #e0f2f1; color: #00695c; font-size: 12px; font-weight: 600; }
+        /* สีพิเศษสำหรับหมวดคอมเซ็ต */
+        .badge-comset { background: #fff3e0; color: #e65100; }
 
         .btn-delete { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 5px 12px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
         .btn-delete:hover { background: #c62828; color: white; }
 
         .back-link { display: block; text-align: center; margin-top: 30px; color: #666; text-decoration: none; }
-        .back-link:hover { color: #000; text-decoration: underline; }
     </style>
 </head>
 <body>
-
+    
     <div class="container">
+        <div style="padding: 15px;">
+    <button onclick="window.location.href='product_list.html'" 
+            style="background: #333; color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-family: 'Prompt', sans-serif;">
+        <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าร้านค้า
+    </button>
+    </div>
         <h1><i class="fa-solid fa-user-gear"></i> ระบบจัดการสินค้า (Admin)</h1>
 
         <div class="form-box">
             <h3><i class="fa-solid fa-plus-circle"></i> เพิ่มสินค้าใหม่</h3>
             
             <div class="input-group">
-                <label>ชื่อสินค้า</label>
-                <input type="text" id="p_name" placeholder="ระบุชื่อรุ่นสินค้า...">
+                <label>ชื่อสินค้า / ชื่อชุดคอมเซ็ต</label>
+                <input type="text" id="p_name" placeholder="ระบุชื่อสินค้า">
             </div>
 
             <div class="row">
                 <div class="col input-group">
-                    <label>หมวดหมู่</label>
+                    <label>หมวดหมู่สินค้า</label>
                     <select id="p_category">
+                        <option value="comset">Computer Set (คอมเซ็ต)</option>
                         <option value="cpu">CPU (ซีพียู)</option>
                         <option value="mainboard">Mainboard (เมนบอร์ด)</option>
                         <option value="ram">RAM (แรม)</option>
                         <option value="gpu">VGA Card (การ์ดจอ)</option>
-                        <option value="ssd">SSD (SATA/Solid State)</option>
+                        <option value="ssd">SSD SATA (Solid State)</option>
                         <option value="m2">M.2 NVMe</option>
-                        <option value="hdd">HDD (ฮาร์ดดิสก์จานหมุน)</option>
+                        <option value="hdd">HDD (ฮาร์ดดิสก์)</option>
                         <option value="psu">Power Supply (พาวเวอร์)</option>
                         <option value="cooler">CPU Cooler (ชุดน้ำ/พัดลม)</option>
                         <option value="case">Computer Case (เคส)</option>
@@ -79,13 +87,18 @@
                 </div>
                 <div class="col input-group">
                     <label>ราคา (บาท)</label>
-                    <input type="number" id="p_price" placeholder="เช่น 5900">
+                    <input type="number" id="p_price" placeholder="ราคา">
                 </div>
             </div>
 
             <div class="input-group">
+                <label>รายละเอียดสินค้า (สเปคเครื่อง)</label>
+                <textarea id="p_details" rows="4" placeholder="กรอกสเปค"></textarea>
+            </div>
+
+            <div class="input-group">
                 <label>ลิงก์รูปภาพ (URL)</label>
-                <input type="text" id="p_img" placeholder="วางลิงก์รูปภาพที่นี่..." oninput="previewImage()">
+                <input type="text" id="p_img" placeholder="วางลิงก์รูปภาพ..." oninput="previewImage()">
             </div>
 
             <div class="preview-box" id="previewContainer">
@@ -93,110 +106,103 @@
                 <img id="imgPreview" src="">
             </div>
 
-            <button class="btn-save" onclick="saveProduct()">บันทึกข้อมูลสินค้า</button>
+            <button class="btn-save" onclick="saveProduct()">บันทึกข้อมูลลงระบบ</button>
         </div>
 
-        <h3><i class="fa-solid fa-list"></i> รายการสินค้าที่มีอยู่</h3>
+        <h3><i class="fa-solid fa-list"></i> รายการสินค้าทั้งหมด</h3>
         <table>
             <thead>
                 <tr>
                     <th width="60">รูป</th>
-                    <th>ชื่อสินค้า</th>
+                    <th>ชื่อสินค้า / หมวดหมู่</th>
                     <th width="100">ราคา</th>
                     <th width="60">จัดการ</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
-                </tbody>
+            <tbody id="tableBody"></tbody>
         </table>
-        <div id="emptyMsg" style="text-align:center; padding:20px; color:#999;">ยังไม่มีสินค้า</div>
+        <div id="emptyMsg" style="text-align:center; padding:20px; color:#999;">ยังไม่มีข้อมูลสินค้า</div>
 
-        <a href="product_list.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> กลับไปหน้าเว็บไซต์หลัก</a>
+        <a href="product_list.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> กลับไปหน้า Product List</a>
     </div>
 
     <script>
-        // โหลดข้อมูลทันทีเมื่อเปิดหน้า
         window.onload = loadProductList;
 
-        // ฟังก์ชันแสดงตัวอย่างรูป
         function previewImage() {
             const url = document.getElementById('p_img').value;
             const container = document.getElementById('previewContainer');
             const img = document.getElementById('imgPreview');
-            
             if(url) {
                 img.src = url;
                 container.style.display = 'block';
-                // ถ้าลิงก์เสียให้ใช้รูปแทน
-                img.onerror = function() { this.src = 'https://via.placeholder.com/150?text=No+Image'; };
+                img.onerror = function() { this.src = 'https://via.placeholder.com/150?text=Invalid+URL'; };
             } else {
                 container.style.display = 'none';
             }
         }
 
-        // ฟังก์ชันบันทึก
         function saveProduct() {
             const name = document.getElementById('p_name').value.trim();
             const category = document.getElementById('p_category').value;
             const price = document.getElementById('p_price').value;
+            const details = document.getElementById('p_details').value;
             const img = document.getElementById('p_img').value;
 
             if(!name || !price) {
-                alert("กรุณากรอกชื่อสินค้าและราคาให้ครบถ้วน");
+                alert("กรุณากรอกชื่อและราคาให้เรียบร้อย");
                 return;
             }
 
             const newProduct = {
-                id: Date.now(), // ใช้เวลาปัจจุบันเป็น ID ไม่ซ้ำ
+                id: Date.now(),
                 name: name,
                 category: category,
                 price: price,
+                details: details || 'ไม่ได้ระบุรายละเอียดสเปค',
                 img: img || 'https://via.placeholder.com/150?text=No+Image'
             };
 
-            // ดึงข้อมูลเก่า -> เพิ่มของใหม่ -> บันทึกกลับ
             let products = JSON.parse(localStorage.getItem('myShopProducts')) || [];
             products.push(newProduct);
             localStorage.setItem('myShopProducts', JSON.stringify(products));
 
-            alert('✅ บันทึกสินค้าสำเร็จ!');
+            alert('✅ บันทึกสินค้าเรียบร้อยแล้ว!');
             
-            // เคลียร์ค่า
             document.getElementById('p_name').value = '';
             document.getElementById('p_price').value = '';
+            document.getElementById('p_details').value = '';
             document.getElementById('p_img').value = '';
             document.getElementById('previewContainer').style.display = 'none';
             
-            // โหลดตารางใหม่
             loadProductList();
         }
 
-        // ฟังก์ชันโหลดตาราง
         function loadProductList() {
             const products = JSON.parse(localStorage.getItem('myShopProducts')) || [];
             const tbody = document.getElementById('tableBody');
             const emptyMsg = document.getElementById('emptyMsg');
 
-            tbody.innerHTML = ''; // ล้างตารางก่อน
+            tbody.innerHTML = '';
 
             if (products.length === 0) {
                 emptyMsg.style.display = 'block';
             } else {
                 emptyMsg.style.display = 'none';
-                
-                // เรียงลำดับจากใหม่ไปเก่า (reverse)
                 products.slice().reverse().forEach(product => {
+                    // แยกสี Badge สำหรับคอมเซ็ต
+                    const badgeClass = product.category === 'comset' ? 'badge badge-comset' : 'badge';
                     const row = `
                         <tr>
                             <td><img src="${product.img}" class="product-img-mini" onerror="this.src='https://via.placeholder.com/50'"></td>
                             <td>
                                 <div style="font-weight:600; color:#333;">${product.name}</div>
-                                <span class="badge">${product.category.toUpperCase()}</span>
+                                <span class="${badgeClass}">${product.category.toUpperCase()}</span>
                             </td>
                             <td style="color:#009688; font-weight:bold;">${Number(product.price).toLocaleString()}</td>
                             <td>
                                 <button class="btn-delete" onclick="deleteProduct(${product.id})">
-                                    <i class="fa-solid fa-trash"></i> ลบ
+                                    <i class="fa-solid fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
@@ -206,11 +212,9 @@
             }
         }
 
-        // ฟังก์ชันลบสินค้า
         function deleteProduct(id) {
-            if(confirm('คุณต้องการลบสินค้านี้ใช่หรือไม่?')) {
+            if(confirm('ยืนยันการลบสินค้านี้?')) {
                 let products = JSON.parse(localStorage.getItem('myShopProducts')) || [];
-                // คัดเอาเฉพาะตัวที่ ID ไม่ตรงกับที่จะลบ
                 products = products.filter(p => p.id !== id);
                 localStorage.setItem('myShopProducts', JSON.stringify(products));
                 loadProductList();
